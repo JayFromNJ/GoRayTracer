@@ -55,9 +55,28 @@ func Equals(a, b Color) bool {
 }
 
 func To256(a Color) (int, int, int) {
-	ret_r := a.r * 255
-	ret_g := a.g * 255
-	ret_b := a.b * 255
+	ret_r := int(math.Floor(a.r * 255))
+	ret_g := int(math.Floor(a.g * 255))
+	ret_b := int(math.Floor(a.b * 255))
 
-	return int(math.Floor(ret_r)), int(math.Floor(ret_g)), int(math.Floor(ret_b))
+	if ret_r < 0 {
+		ret_r = 0
+	}
+	if ret_r > 255 {
+		ret_r = 255
+	}
+	if ret_g < 0 {
+		ret_g = 0
+	}
+	if ret_g > 255 {
+		ret_g = 255
+	}
+	if ret_b < 0 {
+		ret_b = 0
+	}
+	if ret_b > 255 {
+		ret_b = 255
+	}
+
+	return ret_r, ret_g, ret_b
 }
