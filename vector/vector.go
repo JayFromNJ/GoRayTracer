@@ -1,6 +1,7 @@
 package vector
 
 import (
+	"RayTracer/mathf"
 	"fmt"
 	"math"
 )
@@ -18,9 +19,14 @@ func (v *Vector) ToString() string {
 	return fmt.Sprintf("(%v, %v, %v, %v)", v.x, v.y, v.z, v.w)
 }
 
+func (v *Vector) ToArray() [4]float64 {
+	return [4]float64{v.x, v.y, v.z, v.w}
+}
+
 func NewRawVector(x, y, z, w float64) Vector { return Vector{x: x, y: y, z: z, w: w} }
 func NewVector(x, y, z float64) Vector       { return Vector{x: x, y: y, z: z, w: 0.0} }
 func NewPoint(x, y, z float64) Vector        { return Vector{x: x, y: y, z: z, w: 1.0} }
+func FromArray(a [4]float64) Vector          { return Vector{x: a[0], y: a[1], z: a[2], w: a[3]} }
 
 func ZeroVector() Vector { return NewVector(0.0, 0.0, 0.0) }
 func ZeroPoint() Vector  { return NewPoint(0.0, 0.0, 0.0) }
@@ -81,4 +87,20 @@ func Cross(v1, v2 Vector) Vector {
 		(v1.y*v2.z)-(v1.z*v2.y),
 		(v1.z*v2.x)-(v1.x*v2.z),
 		(v1.x*v2.y)-(v1.y*v2.x))
+}
+
+func Equals(v1, v2 Vector) bool {
+	if mathf.Float64Equals(v1.x, v2.x) == false {
+		return false
+	}
+	if mathf.Float64Equals(v1.y, v2.y) == false {
+		return false
+	}
+	if mathf.Float64Equals(v1.z, v2.z) == false {
+		return false
+	}
+	if mathf.Float64Equals(v1.w, v2.w) == false {
+		return false
+	}
+	return true
 }
