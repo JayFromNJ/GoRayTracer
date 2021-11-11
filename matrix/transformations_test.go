@@ -152,3 +152,88 @@ func TestRotateZ(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestShearing(t *testing.T) {
+	transform := Shearing([6]float64{1.0, 0.0, 0.0, 0.0, 0.0, 0.0})
+	point := vector.NewPoint(2.0, 3.0, 4.0)
+	expected := vector.NewPoint(5.0, 3.0, 4.0)
+	result := MultiplyArray4(transform, point.ToArray())
+	if vector.Equals(expected, vector.FromArray(result)) == false {
+		t.Fail()
+	}
+
+	transform = Shearing([6]float64{0.0, 1.0, 0.0, 0.0, 0.0, 0.0})
+	expected = vector.NewPoint(6.0, 3.0, 4.0)
+	result = MultiplyArray4(transform, point.ToArray())
+	if vector.Equals(expected, vector.FromArray(result)) == false {
+		t.Fail()
+	}
+
+	transform = Shearing([6]float64{0.0, 0.0, 1.0, 0.0, 0.0, 0.0})
+	expected = vector.NewPoint(2.0, 5.0, 4.0)
+	result = MultiplyArray4(transform, point.ToArray())
+	if vector.Equals(expected, vector.FromArray(result)) == false {
+		t.Fail()
+	}
+
+	transform = Shearing([6]float64{0.0, 0.0, 0.0, 1.0, 0.0, 0.0})
+	expected = vector.NewPoint(2.0, 7.0, 4.0)
+	result = MultiplyArray4(transform, point.ToArray())
+	if vector.Equals(expected, vector.FromArray(result)) == false {
+		t.Fail()
+	}
+
+	transform = Shearing([6]float64{0.0, 0.0, 0.0, 0.0, 1.0, 0.0})
+	expected = vector.NewPoint(2.0, 3.0, 6.0)
+	result = MultiplyArray4(transform, point.ToArray())
+	if vector.Equals(expected, vector.FromArray(result)) == false {
+		t.Fail()
+	}
+
+	transform = Shearing([6]float64{0.0, 0.0, 0.0, 0.0, 0.0, 1.0})
+	expected = vector.NewPoint(2.0, 3.0, 7.0)
+	result = MultiplyArray4(transform, point.ToArray())
+	if vector.Equals(expected, vector.FromArray(result)) == false {
+		t.Fail()
+	}
+
+}
+
+func TestSequence(t *testing.T) {
+	point := vector.NewPoint(1.0, 0.0, 1.0)
+
+	rotate := RotateX(math.Pi / 2.0)
+	scale := Scaling(5.0, 5.0, 5.0)
+	translate := Translation(10.0, 5.0, 7.0)
+
+	point2 := MultiplyArray4(rotate, point.ToArray())
+	if vector.Equals(vector.NewPoint(1.0, -1.0, 0.0), vector.FromArray(point2)) == false {
+		t.Fail()
+	}
+
+	point3 := MultiplyArray4(scale, point2)
+	if vector.Equals(vector.NewPoint(5.0, -5.0, 0.0), vector.FromArray(point3)) == false {
+		t.Fail()
+	}
+
+	point4 := MultiplyArray4(translate, point3)
+	if vector.Equals(vector.NewPoint(15.0, 0.0, 7.0), vector.FromArray(point4)) == false {
+		t.Fail()
+	}
+}
+
+func TestSequence2(t *testing.T) {
+	point := vector.NewPoint(1.0, 0.0, 1.0)
+
+	rotate := RotateX(math.Pi / 2.0)
+	scale := Scaling(5.0, 5.0, 5.0)
+	translate := Translation(10.0, 5.0, 7.0)
+
+	chained := Multiply4(translate, Multiply4(scale, rotate))
+
+	result := MultiplyArray4(chained, point.ToArray())
+
+	if vector.Equals(vector.NewPoint(15.0, 0.0, 7.0), vector.FromArray(result)) == false {
+		t.Fail()
+	}
+}

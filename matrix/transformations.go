@@ -54,3 +54,16 @@ func RotateZ(r float64) Matrix4 {
 
 	return rotationz_matrix
 }
+
+func Shearing(arr [6]float64) Matrix4 {
+	shearing_matrix := Identity4
+
+	shearing_matrix.Grid[0][1] = arr[0]
+	shearing_matrix.Grid[0][2] = arr[1]
+	shearing_matrix.Grid[1][0] = arr[2]
+	shearing_matrix.Grid[1][2] = arr[3]
+	shearing_matrix.Grid[2][0] = arr[4]
+	shearing_matrix.Grid[2][1] = arr[5]
+
+	return shearing_matrix
+}
