@@ -1,6 +1,7 @@
 package ray
 
 import (
+	"RayTracer/matrix"
 	"RayTracer/vector"
 )
 
@@ -21,4 +22,14 @@ func CreateRay(origin, direction vector.Vector) Ray {
 
 func Position(ray Ray, time float64) vector.Vector {
 	return vector.Add(ray.origin, vector.Multiply(ray.direction, time))
+}
+
+func Transform(ray Ray, mat matrix.Matrix4) Ray {
+	origin := matrix.MultiplyArray4(mat, ray.origin.ToArray())
+	dir := matrix.MultiplyArray4(mat, ray.direction.ToArray())
+
+	return Ray{
+		origin:    vector.FromArray(origin),
+		direction: vector.FromArray(dir),
+	}
 }

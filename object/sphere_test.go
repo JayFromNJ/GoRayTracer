@@ -2,6 +2,7 @@ package object_test
 
 import (
 	"RayTracer/mathf"
+	"RayTracer/matrix"
 	"RayTracer/object"
 	"RayTracer/ray"
 	"RayTracer/vector"
@@ -9,7 +10,7 @@ import (
 )
 
 func TestIntersect(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
 
 	xs := sphere.Intersect(r)
@@ -26,7 +27,7 @@ func TestIntersect(t *testing.T) {
 }
 
 func TestIntersectTangent(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 	r := ray.CreateRay(vector.NewPoint(0.0, 1.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
 
 	xs := sphere.Intersect(r)
@@ -43,7 +44,7 @@ func TestIntersectTangent(t *testing.T) {
 }
 
 func TestIntersectMiss(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 	r := ray.CreateRay(vector.NewPoint(0.0, 2.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
 
 	xs := sphere.Intersect(r)
@@ -54,7 +55,7 @@ func TestIntersectMiss(t *testing.T) {
 }
 
 func TestIntersectInside(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, 0.0), vector.NewVector(0.0, 0.0, 1.0))
 
 	xs := sphere.Intersect(r)
@@ -71,7 +72,8 @@ func TestIntersectInside(t *testing.T) {
 }
 
 func TestIntersectBehind(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
+
 	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, 5.0), vector.NewVector(0.0, 0.0, 1.0))
 
 	xs := sphere.Intersect(r)
@@ -88,7 +90,7 @@ func TestIntersectBehind(t *testing.T) {
 }
 
 func TestCreateIntersection(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 
 	i := object.CreateIntersection(sphere.Object, 3.5)
 
@@ -101,7 +103,7 @@ func TestCreateIntersection(t *testing.T) {
 }
 
 func TestCreateIntersections(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 
 	i1 := object.CreateIntersection(sphere.Object, 1.0)
 	i2 := object.CreateIntersection(sphere.Object, 2.0)
@@ -120,7 +122,7 @@ func TestCreateIntersections(t *testing.T) {
 }
 
 func TestHit(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 
 	i1 := object.CreateIntersection(sphere.Object, 1.0)
 	i2 := object.CreateIntersection(sphere.Object, 2.0)
@@ -134,7 +136,7 @@ func TestHit(t *testing.T) {
 }
 
 func TestHitNegative(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 
 	i1 := object.CreateIntersection(sphere.Object, -1.0)
 	i2 := object.CreateIntersection(sphere.Object, 1.0)
@@ -148,7 +150,7 @@ func TestHitNegative(t *testing.T) {
 }
 
 func TestHitAllNegative(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 
 	i1 := object.CreateIntersection(sphere.Object, -1.0)
 	i2 := object.CreateIntersection(sphere.Object, -2.0)
@@ -162,7 +164,7 @@ func TestHitAllNegative(t *testing.T) {
 }
 
 func TestHitMultiple(t *testing.T) {
-	sphere := object.CreateSphere("test", vector.NewPoint(0.0, 0.0, 0.0), 1.0)
+	sphere := object.CreateSphere("test")
 
 	i1 := object.CreateIntersection(sphere.Object, 5.0)
 	i2 := object.CreateIntersection(sphere.Object, 7.0)
@@ -173,6 +175,53 @@ func TestHitMultiple(t *testing.T) {
 	i := object.Hit(xs)
 
 	if object.Equals(i, i4) == false {
+		t.Fail()
+	}
+}
+
+func TestSphereTransform(t *testing.T) {
+	sphere := object.CreateSphere("test")
+
+	if matrix.Equals4(sphere.Transform(), matrix.Identity4) == false {
+		t.Fail()
+	}
+
+	trans := matrix.Translation(2.0, 3.0, 4.0)
+	sphere.SetTransform(trans)
+
+	if matrix.Equals4(sphere.Transform(), trans) == false {
+		t.Fail()
+	}
+
+}
+
+func TestIntersectTransform(t *testing.T) {
+	sphere := object.CreateSphere("test")
+	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
+
+	sphere.SetTransform(matrix.Scaling(2.0, 2.0, 2.0))
+
+	xs := sphere.Intersect(r)
+
+	if len(xs) != 2 {
+		t.Fail()
+	}
+	if xs[0].GetTime() != 3.0 {
+		t.Fail()
+	}
+	if xs[1].GetTime() != 7.0 {
+		t.Fail()
+	}
+}
+
+func TestIntersectTransformTranslate(t *testing.T) {
+	sphere := object.CreateSphere("test")
+	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
+	sphere.SetTransform(matrix.Translation(5.0, 0.0, 0.0))
+
+	xs := sphere.Intersect(r)
+
+	if len(xs) != 0 {
 		t.Fail()
 	}
 }

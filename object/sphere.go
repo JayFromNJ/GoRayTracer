@@ -1,6 +1,7 @@
 package object
 
 import (
+	"RayTracer/matrix"
 	"RayTracer/ray"
 	"RayTracer/vector"
 	"math"
@@ -11,25 +12,35 @@ type Sphere struct {
 	Object
 }
 
-func (s *Sphere) ID() string              { return s.id }
-func (s *Sphere) Position() vector.Vector { return s.position }
-func (s *Sphere) Radius() float64         { return s.radius }
+func (s *Sphere) ID() string                { return s.id }
+func (s *Sphere) Position() vector.Vector   { return s.position }
+func (s *Sphere) Radius() float64           { return s.radius }
+func (s *Sphere) Transform() matrix.Matrix4 { return s.transform }
 
-func CreateSphere(id string, position vector.Vector, radius float64) Sphere {
+func CreateSphere(id string) Sphere {
 	return Sphere{
-		radius: radius,
+		radius: 1.0,
 		Object: Object{
-			id:       id,
-			position: position,
+			id:        id,
+			position:  vector.NewPoint(0.0, 0.0, 0.0),
+			transform: matrix.Identity4,
 		},
 	}
 }
 
-func (s *Sphere) Intersect(ray ray.Ray) []Intersection {
-	sphere_to_ray := vector.Subtract(ray.Origin(), s.Position())
+func (s *Sphere) Intersect(r ray.Ray) []Intersection {
+	inverse_transform, err := matrix.Inverse4(s.transform)
 
-	a := vector.Dot(ray.Direction(), ray.Direction())
-	b := 2.0 * vector.Dot(ray.Direction(), sphere_to_ray)
+	if err != nil {
+		return []Intersection{}
+	}
+
+	tray := ray.Transform(r, inverse_transform)
+
+	sphere_to_ray := vector.Subtract(tray.Origin(), s.Position())
+
+	a := vector.Dot(tray.Direction(), tray.Direction())
+	b := 2.0 * vector.Dot(tray.Direction(), sphere_to_ray)
 	c := vector.Dot(sphere_to_ray, sphere_to_ray) - 1.0
 
 	discriminant := (b * b) - (4 * (a * c))
