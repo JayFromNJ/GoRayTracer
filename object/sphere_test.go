@@ -6,6 +6,7 @@ import (
 	"RayTracer/object"
 	"RayTracer/ray"
 	"RayTracer/vector"
+	"math"
 	"testing"
 )
 
@@ -222,6 +223,57 @@ func TestIntersectTransformTranslate(t *testing.T) {
 	xs := sphere.Intersect(r)
 
 	if len(xs) != 0 {
+		t.Fail()
+	}
+}
+
+func TestNormal(t *testing.T) {
+	sphere := object.CreateSphere("test")
+	n := sphere.NormalAt(vector.NewPoint(1.0, 0.0, 0.0))
+
+	if vector.Equals(n, vector.NewVector(1.0, 0.0, 0.0)) == false {
+		t.Fail()
+	}
+
+	n = sphere.NormalAt(vector.NewPoint(0.0, 1.0, 0.0))
+	if vector.Equals(n, vector.NewVector(0.0, 1.0, 0.0)) == false {
+		t.Fail()
+	}
+
+	n = sphere.NormalAt(vector.NewPoint(0.0, 0.0, 1.0))
+	if vector.Equals(n, vector.NewVector(0.0, 0.0, 1.0)) == false {
+		t.Fail()
+	}
+
+	n = sphere.NormalAt(vector.NewPoint(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	if vector.Equals(n, vector.NewVector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3)) == false {
+		t.Fail()
+	}
+
+	if vector.Equals(n, vector.Normalize(n)) == false {
+		t.Fail()
+	}
+}
+
+func TestNormalTranslation(t *testing.T) {
+	sphere := object.CreateSphere("test")
+	sphere.SetTransform(matrix.Translation(0.0, 1.0, 0.0))
+
+	n := sphere.NormalAt(vector.NewPoint(0.0, 1.70711, -0.70711))
+
+	if vector.Equals(n, vector.NewVector(0.0, 0.70711, -0.70711)) == false {
+		t.Fail()
+	}
+}
+
+func TestNormalScalingRotation(t *testing.T) {
+	sphere := object.CreateSphere("test")
+	m := matrix.Multiply4(matrix.Scaling(1.0, 0.5, 1.0), matrix.RotateZ(math.Pi/5))
+	sphere.SetTransform(m)
+
+	n := sphere.NormalAt(vector.NewPoint(0.0, math.Sqrt(2.0)/2.0, -math.Sqrt(2.0)/2.0))
+
+	if vector.Equals(n, vector.NewVector(0.0, 0.97014, -0.24254)) == false {
 		t.Fail()
 	}
 }

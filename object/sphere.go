@@ -57,3 +57,14 @@ func (s *Sphere) Intersect(r ray.Ray) []Intersection {
 		CreateIntersection(s.Object, t2),
 	}
 }
+
+func (s *Sphere) NormalAt(point vector.Vector) vector.Vector {
+	inverse, _ := matrix.Inverse4(s.transform)
+	object_point := vector.FromArray(matrix.MultiplyArray4(inverse, point.ToArray()))
+
+	object_normal := vector.Subtract(object_point, s.position)
+
+	world_normal := vector.FromArray(matrix.MultiplyArray4(matrix.Transpose4(inverse), object_normal.ToArray()))
+	world_normal = vector.NewVector(world_normal.X(), world_normal.Y(), world_normal.Z())
+	return vector.Normalize(world_normal)
+}
