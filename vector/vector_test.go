@@ -2,6 +2,7 @@ package vector
 
 import (
 	"RayTracer/mathf"
+	"fmt"
 	"math"
 	"testing"
 )
@@ -161,6 +162,33 @@ func TestVector_Cross(t *testing.T) {
 		t.Fail()
 	}
 	if res_b.x != 1.0 || res_b.y != -2.0 || res_b.z != 1.0 {
+		t.Fail()
+	}
+}
+
+func TestReflect(t *testing.T) {
+	v := NewVector(1.0, -1.0, 0.0)
+	n := NewVector(0.0, 1.0, 0.0)
+
+	r := Reflect(v, n)
+
+	fmt.Println(r)
+
+	if Equals(r, NewVector(1.0, 1.0, 0.0)) == false {
+		t.Fail()
+	}
+}
+
+func TestReflectSlant(t *testing.T) {
+	v := NewVector(0.0, -1.0, 0.0)
+	sq := math.Sqrt(2.0) / 2.0
+	n := NewVector(sq, sq, 0.0)
+
+	r := Reflect(v, n)
+
+	fmt.Println(r)
+
+	if Equals(r, NewVector(1.0, 0.0, 0.0)) == false {
 		t.Fail()
 	}
 }

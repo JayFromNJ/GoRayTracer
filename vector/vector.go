@@ -104,3 +104,7 @@ func Equals(v1, v2 Vector) bool {
 	}
 	return true
 }
+
+func Reflect(line, normal Vector) Vector {
+	return Subtract(line, Multiply(Multiply(normal, 2.0), Dot(line, normal)))
+}
