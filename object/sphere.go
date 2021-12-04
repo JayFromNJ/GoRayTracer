@@ -12,10 +12,9 @@ type Sphere struct {
 	Object
 }
 
-func (s *Sphere) ID() string                { return s.id }
-func (s *Sphere) Position() vector.Vector   { return s.position }
-func (s *Sphere) Radius() float64           { return s.radius }
-func (s *Sphere) Transform() matrix.Matrix4 { return s.transform }
+func (s *Sphere) Radius() float64 { return s.radius }
+
+//func (s *Sphere) Material() Material        { return s.material }
 
 func CreateSphere(id string) Sphere {
 	return Sphere{
@@ -24,8 +23,13 @@ func CreateSphere(id string) Sphere {
 			id:        id,
 			position:  vector.NewPoint(0.0, 0.0, 0.0),
 			transform: matrix.Identity4,
+			material:  CreateDefaultMaterial(),
 		},
 	}
+}
+
+func (s *Sphere) SetMaterial(mat Material) {
+	s.material = mat
 }
 
 func (s *Sphere) Intersect(r ray.Ray) []Intersection {

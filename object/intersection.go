@@ -17,8 +17,13 @@ func (i *Intersection) GetObjectPosition() vector.Vector { return i.position }
 
 func CreateIntersection(obj Object, t float64) Intersection {
 	return Intersection{
-		Object: Object{id: obj.id, position: obj.position},
-		t:      t,
+		Object: Object{
+			id:        obj.id,
+			position:  obj.position,
+			transform: obj.transform,
+			material:  obj.material,
+		},
+		t: t,
 	}
 }
 

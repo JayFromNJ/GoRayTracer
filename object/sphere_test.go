@@ -1,6 +1,7 @@
 package object_test
 
 import (
+	"RayTracer/color"
 	"RayTracer/mathf"
 	"RayTracer/matrix"
 	"RayTracer/object"
@@ -274,6 +275,19 @@ func TestNormalScalingRotation(t *testing.T) {
 	n := sphere.NormalAt(vector.NewPoint(0.0, math.Sqrt(2.0)/2.0, -math.Sqrt(2.0)/2.0))
 
 	if vector.Equals(n, vector.NewVector(0.0, 0.97014, -0.24254)) == false {
+		t.Fail()
+	}
+}
+
+func TestMaterials(t *testing.T) {
+	sphere := object.CreateSphere("test")
+	m := object.CreateMaterial(color.NewColor(1.0, 1.0, 1.0), 1.0, 0.0, 0.0, 10.0)
+
+	sphere.SetMaterial(m)
+
+	get_m := sphere.Material()
+
+	if mathf.Float64Equals(get_m.Ambient(), 1.0) == false {
 		t.Fail()
 	}
 }
