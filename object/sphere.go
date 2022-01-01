@@ -14,8 +14,6 @@ type Sphere struct {
 
 func (s *Sphere) Radius() float64 { return s.radius }
 
-//func (s *Sphere) Material() Material        { return s.material }
-
 func CreateSphere(id string) Sphere {
 	return Sphere{
 		radius: 1.0,
@@ -33,19 +31,19 @@ func (s *Sphere) SetMaterial(mat Material) {
 }
 
 func (s *Sphere) Intersect(r ray.Ray) []Intersection {
-	inverse_transform, err := matrix.Inverse4(s.transform)
+	inverseTransform, err := matrix.Inverse4(s.transform)
 
 	if err != nil {
 		return []Intersection{}
 	}
 
-	tray := ray.Transform(r, inverse_transform)
+	tray := r.Transform(inverseTransform)
 
-	sphere_to_ray := vector.Subtract(tray.Origin(), s.Position())
+	sphereToRay := vector.Subtract(tray.Origin(), s.Position())
 
 	a := vector.Dot(tray.Direction(), tray.Direction())
-	b := 2.0 * vector.Dot(tray.Direction(), sphere_to_ray)
-	c := vector.Dot(sphere_to_ray, sphere_to_ray) - 1.0
+	b := 2.0 * vector.Dot(tray.Direction(), sphereToRay)
+	c := vector.Dot(sphereToRay, sphereToRay) - 1.0
 
 	discriminant := (b * b) - (4 * (a * c))
 
@@ -64,11 +62,11 @@ func (s *Sphere) Intersect(r ray.Ray) []Intersection {
 
 func (s *Sphere) NormalAt(point vector.Vector) vector.Vector {
 	inverse, _ := matrix.Inverse4(s.transform)
-	object_point := vector.FromArray(matrix.MultiplyArray4(inverse, point.ToArray()))
+	objectPoint := vector.FromArray(matrix.MultiplyArray4(inverse, point.ToArray()))
 
-	object_normal := vector.Subtract(object_point, s.position)
+	objectNormal := vector.Subtract(objectPoint, s.position)
 
-	world_normal := vector.FromArray(matrix.MultiplyArray4(matrix.Transpose4(inverse), object_normal.ToArray()))
-	world_normal = vector.NewVector(world_normal.X(), world_normal.Y(), world_normal.Z())
-	return vector.Normalize(world_normal)
+	worldNormal := vector.FromArray(matrix.MultiplyArray4(matrix.Transpose4(inverse), objectNormal.ToArray()))
+	worldNormal = vector.NewVector(worldNormal.X(), worldNormal.Y(), worldNormal.Z())
+	return vector.Normalize(worldNormal)
 }

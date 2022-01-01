@@ -3,67 +3,67 @@ package matrix
 import "math"
 
 func Translation(x, y, z float64) Matrix4 {
-	translation_matrix := Identity4
+	translationMatrix := Identity4
 
-	translation_matrix.Grid[0][3] = x
-	translation_matrix.Grid[1][3] = y
-	translation_matrix.Grid[2][3] = z
+	translationMatrix.Grid[0][3] = x
+	translationMatrix.Grid[1][3] = y
+	translationMatrix.Grid[2][3] = z
 
-	return translation_matrix
+	return translationMatrix
 }
 
 func Scaling(x, y, z float64) Matrix4 {
-	scaling_matrix := Identity4
+	scalingMatrix := Identity4
 
-	scaling_matrix.Grid[0][0] = x
-	scaling_matrix.Grid[1][1] = y
-	scaling_matrix.Grid[2][2] = z
+	scalingMatrix.Grid[0][0] = x
+	scalingMatrix.Grid[1][1] = y
+	scalingMatrix.Grid[2][2] = z
 
-	return scaling_matrix
+	return scalingMatrix
 }
 
 func RotateX(r float64) Matrix4 {
-	rotationx_matrix := Identity4
+	rotationxMatrix := Identity4
 
-	rotationx_matrix.Grid[1][1] = math.Cos(r)
-	rotationx_matrix.Grid[1][2] = -math.Sin(r)
-	rotationx_matrix.Grid[2][1] = math.Sin(r)
-	rotationx_matrix.Grid[2][2] = math.Cos(r)
+	rotationxMatrix.Grid[1][1] = math.Cos(r)
+	rotationxMatrix.Grid[1][2] = -math.Sin(r)
+	rotationxMatrix.Grid[2][1] = math.Sin(r)
+	rotationxMatrix.Grid[2][2] = math.Cos(r)
 
-	return rotationx_matrix
+	return rotationxMatrix
 }
 
 func RotateY(r float64) Matrix4 {
-	rotationy_matrix := Identity4
+	rotationyMatrix := Identity4
 
-	rotationy_matrix.Grid[0][0] = math.Cos(r)
-	rotationy_matrix.Grid[0][2] = math.Sin(r)
-	rotationy_matrix.Grid[2][0] = -math.Sin(r)
-	rotationy_matrix.Grid[2][2] = math.Cos(r)
+	rotationyMatrix.Grid[0][0] = math.Cos(r)
+	rotationyMatrix.Grid[0][2] = math.Sin(r)
+	rotationyMatrix.Grid[2][0] = -math.Sin(r)
+	rotationyMatrix.Grid[2][2] = math.Cos(r)
 
-	return rotationy_matrix
+	return rotationyMatrix
 }
 
 func RotateZ(r float64) Matrix4 {
-	rotationz_matrix := Identity4
+	rotationzMatrix := Identity4
 
-	rotationz_matrix.Grid[0][0] = math.Cos(r)
-	rotationz_matrix.Grid[0][1] = -math.Sin(r)
-	rotationz_matrix.Grid[1][0] = math.Sin(r)
-	rotationz_matrix.Grid[1][1] = math.Cos(r)
+	rotationzMatrix.Grid[0][0] = math.Cos(r)
+	rotationzMatrix.Grid[0][1] = -math.Sin(r)
+	rotationzMatrix.Grid[1][0] = math.Sin(r)
+	rotationzMatrix.Grid[1][1] = math.Cos(r)
 
-	return rotationz_matrix
+	return rotationzMatrix
 }
 
 func Shearing(arr [6]float64) Matrix4 {
-	shearing_matrix := Identity4
+	shearingMatrix := Identity4
 
-	shearing_matrix.Grid[0][1] = arr[0]
-	shearing_matrix.Grid[0][2] = arr[1]
-	shearing_matrix.Grid[1][0] = arr[2]
-	shearing_matrix.Grid[1][2] = arr[3]
-	shearing_matrix.Grid[2][0] = arr[4]
-	shearing_matrix.Grid[2][1] = arr[5]
+	shearingMatrix.Grid[0][1] = arr[0]
+	shearingMatrix.Grid[0][2] = arr[1]
+	shearingMatrix.Grid[1][0] = arr[2]
+	shearingMatrix.Grid[1][2] = arr[3]
+	shearingMatrix.Grid[2][0] = arr[4]
+	shearingMatrix.Grid[2][1] = arr[5]
 
-	return shearing_matrix
+	return shearingMatrix
 }

@@ -20,13 +20,13 @@ func CreateRay(origin, direction vector.Vector) Ray {
 	}
 }
 
-func Position(ray Ray, time float64) vector.Vector {
-	return vector.Add(ray.origin, vector.Multiply(ray.direction, time))
+func (r *Ray) Position(time float64) vector.Vector {
+	return vector.Add(r.origin, vector.Multiply(r.direction, time))
 }
 
-func Transform(ray Ray, mat matrix.Matrix4) Ray {
-	origin := matrix.MultiplyArray4(mat, ray.origin.ToArray())
-	dir := matrix.MultiplyArray4(mat, ray.direction.ToArray())
+func (r *Ray) Transform(mat matrix.Matrix4) Ray {
+	origin := matrix.MultiplyArray4(mat, r.origin.ToArray())
+	dir := matrix.MultiplyArray4(mat, r.direction.ToArray())
 
 	return Ray{
 		origin:    vector.FromArray(origin),

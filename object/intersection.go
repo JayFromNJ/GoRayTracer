@@ -37,7 +37,7 @@ func NullIntersection() Intersection {
 	}
 }
 
-func Equals(i1 Intersection, i2 Intersection) bool {
+func IntersectionEquals(i1 Intersection, i2 Intersection) bool {
 	if i1.id != i2.id {
 		return false
 	}

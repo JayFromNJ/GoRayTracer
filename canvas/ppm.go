@@ -17,23 +17,23 @@ func ToPPM(canvas Canvas, fname string) {
 
 	file.WriteString("P3\n")
 
-	w_and_h := fmt.Sprintf("%v %v\n", canvas.Width(), canvas.Height())
-	file.WriteString(w_and_h)
+	widthAndHeight := fmt.Sprintf("%v %v\n", canvas.Width(), canvas.Height())
+	file.WriteString(widthAndHeight)
 
 	file.WriteString("255\n")
 
-	linesplitnum := 0
+	lineSplitNum := 0
 
 	for i := 0; i < canvas.Height(); i++ {
-		linesplitnum = 0
+		lineSplitNum = 0
 		for j := 0; j < canvas.Width(); j++ {
 			r, g, b := color.To256(canvas.pixels[i][j])
 			rgb := fmt.Sprintf("%v %v %v ", r, g, b)
-			linesplitnum = linesplitnum + len(rgb)
+			lineSplitNum = lineSplitNum + len(rgb)
 
-			if linesplitnum > 70 {
+			if lineSplitNum > 70 {
 				file.WriteString("\n")
-				linesplitnum = 0
+				lineSplitNum = 0
 			}
 
 			file.WriteString(rgb)

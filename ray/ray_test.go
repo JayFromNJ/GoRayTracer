@@ -23,16 +23,16 @@ func TestRayCreation(t *testing.T) {
 func TestPosition(t *testing.T) {
 	r := ray.CreateRay(vector.NewPoint(2.0, 3.0, 4.0), vector.NewVector(1.0, 0.0, 0.0))
 
-	if vector.Equals(ray.Position(r, 0.0), vector.NewPoint(2.0, 3.0, 4.0)) == false {
+	if vector.Equals(r.Position(0.0), vector.NewPoint(2.0, 3.0, 4.0)) == false {
 		t.Fail()
 	}
-	if vector.Equals(ray.Position(r, 1.0), vector.NewPoint(3.0, 3.0, 4.0)) == false {
+	if vector.Equals(r.Position(1.0), vector.NewPoint(3.0, 3.0, 4.0)) == false {
 		t.Fail()
 	}
-	if vector.Equals(ray.Position(r, -1.0), vector.NewPoint(1.0, 3.0, 4.0)) == false {
+	if vector.Equals(r.Position(-1.0), vector.NewPoint(1.0, 3.0, 4.0)) == false {
 		t.Fail()
 	}
-	if vector.Equals(ray.Position(r, 2.5), vector.NewPoint(4.5, 3.0, 4.0)) == false {
+	if vector.Equals(r.Position(2.5), vector.NewPoint(4.5, 3.0, 4.0)) == false {
 		t.Fail()
 	}
 }
@@ -42,7 +42,7 @@ func TestTranslation(t *testing.T) {
 
 	m := matrix.Translation(3.0, 4.0, 5.0)
 
-	r2 := ray.Transform(r, m)
+	r2 := r.Transform(m)
 
 	if vector.Equals(r2.Origin(), vector.NewPoint(4.0, 6.0, 8.0)) == false {
 		t.Fail()
@@ -56,7 +56,7 @@ func TestScaling(t *testing.T) {
 	r := ray.CreateRay(vector.NewPoint(1.0, 2.0, 3.0), vector.NewVector(0.0, 1.0, 0.0))
 	m := matrix.Scaling(2.0, 3.0, 4.0)
 
-	r2 := ray.Transform(r, m)
+	r2 := r.Transform(m)
 
 	if vector.Equals(r2.Origin(), vector.NewPoint(2.0, 6.0, 12.0)) == false {
 		t.Fail()

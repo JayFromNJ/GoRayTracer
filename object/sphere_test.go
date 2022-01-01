@@ -132,7 +132,7 @@ func TestHit(t *testing.T) {
 
 	i := object.Hit(xs)
 
-	if object.Equals(i, i1) == false {
+	if object.IntersectionEquals(i, i1) == false {
 		t.Fail()
 	}
 }
@@ -146,7 +146,7 @@ func TestHitNegative(t *testing.T) {
 
 	i := object.Hit(xs)
 
-	if object.Equals(i, i2) == false {
+	if object.IntersectionEquals(i, i2) == false {
 		t.Fail()
 	}
 }
@@ -160,7 +160,7 @@ func TestHitAllNegative(t *testing.T) {
 
 	i := object.Hit(xs)
 
-	if object.Equals(i, object.NullIntersection()) == false {
+	if object.IntersectionEquals(i, object.NullIntersection()) == false {
 		t.Fail()
 	}
 }
@@ -176,7 +176,7 @@ func TestHitMultiple(t *testing.T) {
 
 	i := object.Hit(xs)
 
-	if object.Equals(i, i4) == false {
+	if object.IntersectionEquals(i, i4) == false {
 		t.Fail()
 	}
 }

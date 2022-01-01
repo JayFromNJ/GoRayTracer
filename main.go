@@ -7,7 +7,6 @@ import (
 	"RayTracer/object"
 	"RayTracer/ray"
 	"RayTracer/vector"
-	"fmt"
 	"math"
 )
 
@@ -24,13 +23,11 @@ func main() {
 	sphere := object.CreateSphere("one")
 	sphere.SetMaterial(object.CreateMaterial(color.NewColor(1.0, 0.2, 1.0), 0.1, 0.9, 0.9, 200.0))
 
-	//fmt.Println(sphere)
-
 	rayOrigin := vector.NewPoint(0.0, 0.0, -5.0)
 
-	light_position := vector.NewPoint(-10.0, 10.0, -10.0)
-	light_color := color.NewColor(1.0, 1.0, 1.0)
-	light := object.CreatePointLight(light_position, light_color)
+	lightPosition := vector.NewPoint(-10.0, 10.0, -10.0)
+	lightColor := color.NewColor(1.0, 1.0, 1.0)
+	light := object.CreatePointLight(lightPosition, lightColor)
 
 	rotate := matrix.RotateZ(math.Pi / 3)
 	scale := matrix.Scaling(3.0, 3.0, 3.0)
@@ -49,16 +46,13 @@ func main() {
 
 			if len(xs) > 0 {
 				hit := object.Hit(xs)
-				fmt.Println(hit)
 
-				point := ray.Position(r, hit.GetTime())
+				point := r.Position(hit.GetTime())
 				normal := sphere.NormalAt(point)
 				eye := vector.Multiply(r.Direction(), -1.0)
 
-				fmt.Println(hit.Material())
 				canvasColor = object.Lighting(hit.Material(), light, point, eye, normal)
 
-				fmt.Printf("x: %v, y: %v, Color: %v\n", x, y, canvasColor)
 				theCanvas.WritePixel(x, y, canvasColor)
 			}
 		}

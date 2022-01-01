@@ -21,6 +21,4 @@ func (obj *Object) Position() vector.Vector   { return obj.position }
 func (obj *Object) Transform() matrix.Matrix4 { return obj.transform }
 func (obj *Object) Material() Material        { return obj.material }
 
-func (obj *Object) SetTransform(t matrix.Matrix4) {
-	obj.transform = t
-}
+func (obj *Object) SetTransform(t matrix.Matrix4) { obj.transform = t }
