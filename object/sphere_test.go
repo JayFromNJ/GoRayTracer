@@ -94,7 +94,7 @@ func TestIntersectBehind(t *testing.T) {
 func TestCreateIntersection(t *testing.T) {
 	sphere := object.CreateSphere("test")
 
-	i := object.CreateIntersection(sphere.Object, 3.5)
+	i := object.CreateIntersection(&sphere, 3.5)
 
 	if mathf.Float64Equals(i.GetTime(), 3.5) == false {
 		t.Fail()
@@ -107,8 +107,8 @@ func TestCreateIntersection(t *testing.T) {
 func TestCreateIntersections(t *testing.T) {
 	sphere := object.CreateSphere("test")
 
-	i1 := object.CreateIntersection(sphere.Object, 1.0)
-	i2 := object.CreateIntersection(sphere.Object, 2.0)
+	i1 := object.CreateIntersection(&sphere, 1.0)
+	i2 := object.CreateIntersection(&sphere, 2.0)
 
 	xs := []object.Intersection{i1, i2}
 
@@ -126,8 +126,8 @@ func TestCreateIntersections(t *testing.T) {
 func TestHit(t *testing.T) {
 	sphere := object.CreateSphere("test")
 
-	i1 := object.CreateIntersection(sphere.Object, 1.0)
-	i2 := object.CreateIntersection(sphere.Object, 2.0)
+	i1 := object.CreateIntersection(&sphere, 1.0)
+	i2 := object.CreateIntersection(&sphere, 2.0)
 	xs := []object.Intersection{i1, i2}
 
 	i := object.Hit(xs)
@@ -140,8 +140,8 @@ func TestHit(t *testing.T) {
 func TestHitNegative(t *testing.T) {
 	sphere := object.CreateSphere("test")
 
-	i1 := object.CreateIntersection(sphere.Object, -1.0)
-	i2 := object.CreateIntersection(sphere.Object, 1.0)
+	i1 := object.CreateIntersection(&sphere, -1.0)
+	i2 := object.CreateIntersection(&sphere, 1.0)
 	xs := []object.Intersection{i1, i2}
 
 	i := object.Hit(xs)
@@ -154,8 +154,8 @@ func TestHitNegative(t *testing.T) {
 func TestHitAllNegative(t *testing.T) {
 	sphere := object.CreateSphere("test")
 
-	i1 := object.CreateIntersection(sphere.Object, -1.0)
-	i2 := object.CreateIntersection(sphere.Object, -2.0)
+	i1 := object.CreateIntersection(&sphere, -1.0)
+	i2 := object.CreateIntersection(&sphere, -2.0)
 	xs := []object.Intersection{i1, i2}
 
 	i := object.Hit(xs)
@@ -168,10 +168,10 @@ func TestHitAllNegative(t *testing.T) {
 func TestHitMultiple(t *testing.T) {
 	sphere := object.CreateSphere("test")
 
-	i1 := object.CreateIntersection(sphere.Object, 5.0)
-	i2 := object.CreateIntersection(sphere.Object, 7.0)
-	i3 := object.CreateIntersection(sphere.Object, -3.0)
-	i4 := object.CreateIntersection(sphere.Object, 2.0)
+	i1 := object.CreateIntersection(&sphere, 5.0)
+	i2 := object.CreateIntersection(&sphere, 7.0)
+	i3 := object.CreateIntersection(&sphere, -3.0)
+	i4 := object.CreateIntersection(&sphere, 2.0)
 	xs := []object.Intersection{i1, i2, i3, i4}
 
 	i := object.Hit(xs)

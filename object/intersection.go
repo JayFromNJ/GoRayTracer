@@ -7,41 +7,34 @@ import (
 )
 
 type Intersection struct {
-	Object
-	t float64
+	ho HittableObject
+	t  float64
 }
 
 func (i *Intersection) GetTime() float64                 { return i.t }
-func (i *Intersection) GetObjectID() string              { return i.id }
-func (i *Intersection) GetObjectPosition() vector.Vector { return i.position }
+func (i *Intersection) GetObjectID() string              { return i.ho.GetObjectID() }
+func (i *Intersection) GetObjectPosition() vector.Vector { return i.ho.GetPosition() }
 
-func CreateIntersection(obj Object, t float64) Intersection {
+func CreateIntersection(ho HittableObject, t float64) Intersection {
 	return Intersection{
-		Object: Object{
-			id:        obj.id,
-			position:  obj.position,
-			transform: obj.transform,
-			material:  obj.material,
-		},
-		t: t,
+		ho: ho,
+		t:  t,
 	}
 }
 
 func NullIntersection() Intersection {
+	nullSphere := NullSphere()
 	return Intersection{
-		Object: Object{
-			id:       "null",
-			position: vector.NewPoint(0.0, 0.0, 0.0),
-		},
-		t: math.MaxFloat64,
+		ho: &nullSphere,
+		t:  math.MaxFloat64,
 	}
 }
 
 func IntersectionEquals(i1 Intersection, i2 Intersection) bool {
-	if i1.id != i2.id {
+	if i1.ho.GetObjectID() != i2.ho.GetObjectID() {
 		return false
 	}
-	if i1.position != i2.position {
+	if i1.ho.GetPosition() != i2.ho.GetPosition() {
 		return false
 	}
 	if i1.t != i2.t {

@@ -30,3 +30,35 @@ func TestDefaultWorld(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestPrepareComputations(t *testing.T) {
+	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
+	shape := object.CreateSphere("1")
+
+	i := object.CreateIntersection(&shape, 4)
+
+	comps := object.PrepareComputations(i, r)
+
+	if comps.GetTime() != i.GetTime() {
+		t.Errorf("Time does not equal")
+	}
+
+	pointToTest := vector.NewPoint(0.0, 0.0, -1.0)
+	vecToTest := vector.NewVector(0.0, 0.0, -1.0)
+
+	if comps.GetHittableObject().GetObjectID() != i.GetObjectID() {
+		t.Errorf("Hittable Objects are not the same")
+	}
+
+	if vector.Equals(comps.GetPoint(), pointToTest) == false {
+		t.Errorf("comps Point is %x not %x", comps.GetPoint(), vecToTest)
+	}
+
+	if vector.Equals(comps.GetEyeV(), vecToTest) == false {
+		t.Errorf("EyeV is %x not %x", comps.GetEyeV(), vecToTest)
+	}
+
+	if vector.Equals(comps.GetNormalV(), vecToTest) == false {
+		t.Errorf("GetNormalV is %x not %x", comps.GetNormalV(), vecToTest)
+	}
+}

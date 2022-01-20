@@ -14,12 +14,27 @@ type Sphere struct {
 
 func (s *Sphere) Radius() float64 { return s.radius }
 
+func (s *Sphere) GetObjectID() string        { return s.Object.ID() }
+func (s *Sphere) GetPosition() vector.Vector { return s.Position() }
+
 func CreateSphere(id string) Sphere {
 	return Sphere{
 		radius: 1.0,
 		Object: Object{
 			id:        id,
 			position:  vector.NewPoint(0.0, 0.0, 0.0),
+			transform: matrix.Identity4,
+			material:  CreateDefaultMaterial(),
+		},
+	}
+}
+
+func NullSphere() Sphere {
+	return Sphere{
+		radius: 0.0,
+		Object: Object{
+			id:        "null_sphere",
+			position:  vector.ZeroPoint(),
 			transform: matrix.Identity4,
 			material:  CreateDefaultMaterial(),
 		},
@@ -55,8 +70,8 @@ func (s *Sphere) Intersect(r ray.Ray) []Intersection {
 	t2 := (-b + math.Sqrt(discriminant)) / (2.0 * a)
 
 	return []Intersection{
-		CreateIntersection(s.Object, t1),
-		CreateIntersection(s.Object, t2),
+		CreateIntersection(s, t1),
+		CreateIntersection(s, t2),
 	}
 }
 
