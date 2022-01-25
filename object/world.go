@@ -10,7 +10,7 @@ import (
 
 type World struct {
 	Spheres []Sphere
-	Lights  []Light
+	Light   Light
 }
 
 func CreateEmptyWorld() World {
@@ -26,7 +26,7 @@ func DefaultWorld() World {
 	s2.SetTransform(matrix.Scaling(0.5, 0.5, 0.5))
 
 	return CreateEmptyWorld().
-		AddLight(CreatePointLight(vector.NewPoint(-10.0, 10.0, -10.0), color.NewColor(1.0, 1.0, 1.0))).
+		SetLight(CreatePointLight(vector.NewPoint(-10.0, 10.0, -10.0), color.NewColor(1.0, 1.0, 1.0))).
 		AddSphere(s1).
 		AddSphere(s2)
 }
@@ -34,14 +34,14 @@ func DefaultWorld() World {
 func (w World) AddSphere(sphere Sphere) World {
 	return World{
 		Spheres: append(w.Spheres, sphere),
-		Lights:  w.Lights,
+		Light:   w.Light,
 	}
 }
 
-func (w World) AddLight(light Light) World {
+func (w World) SetLight(light Light) World {
 	return World{
 		Spheres: w.Spheres,
-		Lights:  append(w.Lights, light),
+		Light:   light,
 	}
 }
 

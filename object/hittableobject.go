@@ -10,4 +10,5 @@ type HittableObject interface {
 	NormalAt(point vector.Vector) vector.Vector
 	GetObjectID() string
 	GetPosition() vector.Vector
+	GetMaterial() Material
 }

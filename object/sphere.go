@@ -16,6 +16,7 @@ func (s *Sphere) Radius() float64 { return s.radius }
 
 func (s *Sphere) GetObjectID() string        { return s.Object.ID() }
 func (s *Sphere) GetPosition() vector.Vector { return s.Position() }
+func (s *Sphere) GetMaterial() Material      { return s.material }
 
 func CreateSphere(id string) Sphere {
 	return Sphere{

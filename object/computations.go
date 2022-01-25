@@ -1,6 +1,7 @@
 package object
 
 import (
+	"RayTracer/color"
 	"RayTracer/ray"
 	"RayTracer/vector"
 )
@@ -43,4 +44,11 @@ func PrepareComputations(intersection Intersection, ray ray.Ray) Computations {
 		normalv: normalv,
 		inside:  inside,
 	}
+}
+
+func ShadeHit(world World, comps Computations) color.Color {
+	return Lighting(comps.hitObj.GetMaterial(), world.Light,
+		comps.GetPoint(),
+		comps.GetEyeV(),
+		comps.GetNormalV())
 }

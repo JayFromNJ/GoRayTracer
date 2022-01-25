@@ -1,6 +1,7 @@
 package object_test
 
 import (
+	"RayTracer/color"
 	"RayTracer/object"
 	"RayTracer/ray"
 	"RayTracer/vector"
@@ -96,5 +97,40 @@ func TestInsideTwo(t *testing.T) {
 
 	if comps.IsInside() != true {
 		t.Errorf("TestInsideTwo: Inside set to false, should be true")
+	}
+}
+
+func TestShadingIntersection(t *testing.T) {
+	w := object.DefaultWorld()
+	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, -5.0), vector.NewVector(0.0, 0.0, 1.0))
+	shape := w.Spheres[0]
+	i := object.CreateIntersection(&shape, 4)
+
+	comps := object.PrepareComputations(i, r)
+
+	c := object.ShadeHit(w, comps)
+
+	if color.Equals(c, color.NewColor(0.38066, 0.47583, 0.2855)) == false {
+		t.Errorf("TestShadingIntersection: Result (%f, %f, %f,),  Expected: (0.38066, 0.47583, 0.2855)", c.R(), c.G(), c.B())
+	}
+}
+
+func TestShadingIntersectionFromInside(t *testing.T) {
+	pl := object.CreatePointLight(vector.NewPoint(0.0, 0.25, 0.0), color.NewColor(1.0, 1.0, 1.0))
+	w := object.DefaultWorld().
+		SetLight(pl)
+
+	r := ray.CreateRay(vector.NewPoint(0.0, 0.0, 0.0), vector.NewVector(0.0, 0.0, 1.0))
+
+	shape := w.Spheres[1]
+
+	i := object.CreateIntersection(&shape, 0.5)
+
+	comps := object.PrepareComputations(i, r)
+
+	c := object.ShadeHit(w, comps)
+
+	if color.Equals(c, color.NewColor(0.90498, 0.90498, 0.90498)) == false {
+		t.Errorf("TestShadingIntersectionFromInside: Result (%f, %f, %f), Expected: (0.90498, 0.90498, 0.90498)", c.R(), c.G(), c.B())
 	}
 }
